@@ -337,12 +337,12 @@ def log_openbazaar_start(log, ob_ctx):
 def attempt_browser_open(ob_ctx):
     if not ob_ctx.disable_open_browser:
         with open('html/dynamic_port.js', 'w') as fout:
-          fout.write('var wsip="%s";var wsport="%s";' % (ob_ctx.http_ip, ob_ctx.http_port))
-      
-        nodeurl="node-webkit/nw"
+            fout.write('var wsip="%s";var wsport="%s";' % (ob_ctx.http_ip, ob_ctx.http_port))
+
+        nodeurl = "node-webkit/nw"
 
         if is_mac():
-	   nodeurl="node-webkit/node-webkit.app/Contents/MacOS/node-webkit"
+            nodeurl = "node-webkit/node-webkit.app/Contents/MacOS/node-webkit"
         subprocess.call([nodeurl, "html"])
 
 
