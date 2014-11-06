@@ -17,3 +17,5 @@ html/backups/
 installers/ubuntu/*.deb
 installers/ubuntu/output/
 installers/windows/dist_exe/
+node-webkit/
+html/dynamic_port.js

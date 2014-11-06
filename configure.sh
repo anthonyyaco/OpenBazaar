@@ -93,6 +93,18 @@ function installMac {
   # install python deps inside our virtualenv
   ./env/bin/pip install -r requirements.txt
 
+  if [ ! -d "node-webkit" ]
+  then
+    if [ `getconf LONG_BIT` = "64" ]
+    then
+      wget http://dl.node-webkit.org/v0.10.5/node-webkit-v0.10.5-osx-x64.zip -O - | unzip
+      mv node-webkit-v0.10.5-osx-x64 node-webkit
+    else
+      wget http://dl.node-webkit.org/v0.10.5/node-webkit-v0.10.5-osx-ia32.zip -O - | unzip
+      mv node-webkit-v0.10.5-osx-ia32 node-webkit
+    fi
+  fi
+
   doneMessage
 }
 
@@ -120,6 +132,19 @@ function installUbuntu {
   fi
 
   ./env/bin/pip install -r requirements.txt
+
+  if [ ! -d "node-webkit" ]
+  then
+    if [ `getconf LONG_BIT` = "64" ]
+    then
+      wget http://dl.node-webkit.org/v0.10.5/node-webkit-v0.10.5-linux-x64.tar.gz -O - | tar -xz
+      mv node-webkit-v0.10.5-linux-x64 node-webkit
+    else
+      wget http://dl.node-webkit.org/v0.10.5/node-webkit-v0.10.5-linux-ia32.tar.gz -O - | tar -xz
+      mv node-webkit-v0.10.5-linux-ia32 node-webkit
+    fi
+    sed -i 's/udev\.so\.0/udev.so.1/g' node-webkit/nw
+  fi
 
   doneMessage
 }

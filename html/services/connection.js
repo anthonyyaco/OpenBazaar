@@ -3,6 +3,9 @@ angular.module('app')
 
     var Connection = function(onMessage) {
       var socket_uri = document.URL.replace(/https?:(.*)\/html\/.*/, "ws:$1/ws");
+      if(socket_uri.indexOf("ws")==-1){ //nodewebkit file:/
+        socket_uri="ws:"+wsip+":"+wsport+"/ws";
+      }
       console.log('Started websocket:', socket_uri);
       var websocket = new WebSocket(socket_uri);
 

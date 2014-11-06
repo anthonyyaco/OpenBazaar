@@ -127,7 +127,7 @@ angular.module('app')
     .config([
         '$compileProvider',
         function($compileProvider) {
-            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|bitcoin):/);
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|bitcoin|file):/);
             // Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
         }
     ]);

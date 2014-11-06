@@ -5,6 +5,7 @@ import os
 import signal
 from threading import Lock
 import time
+import subprocess
 
 import tornado.httpserver
 import tornado.netutil
@@ -15,7 +16,7 @@ from db_store import Obdb
 from market import Market
 from transport import CryptoTransportLayer
 import upnp
-from util import open_default_webbrowser, is_mac
+from util import is_mac
 from ws import WebSocketHandler
 
 if is_mac():
@@ -335,8 +336,14 @@ def log_openbazaar_start(log, ob_ctx):
 
 def attempt_browser_open(ob_ctx):
     if not ob_ctx.disable_open_browser:
-        open_default_webbrowser(
-            'http://%s:%s' % (ob_ctx.http_ip, ob_ctx.http_port))
+        with open('html/dynamic_port.js', 'w') as fout:
+          fout.write('var wsip="%s";var wsport="%s";' % (ob_ctx.http_ip, ob_ctx.http_port))
+      
+        nodeurl="node-webkit/nw"
+
+        if is_mac():
+	   nodeurl="node-webkit/node-webkit.app/Contents/MacOS/node-webkit"
+        subprocess.call([nodeurl, "html"])
 
 
 def setup_signal_handlers(application):
