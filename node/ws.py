@@ -1105,6 +1105,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         )
         self.transport = transport
 
+    def check_origin(self, origin):
+        return True
+
     def open(self):
         self.log.info('Websocket open')
         self.app_handler.send_opening()
