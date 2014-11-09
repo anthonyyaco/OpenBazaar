@@ -146,7 +146,7 @@ class OpenBazaarContext(object):
                 'disable_stun_check': False,
                 'disable_open_browser': False,
                 'disable_sqlite_crypt': False,
-                'log_level': 5,
+                'log_level': 30,
                 # CRITICAL=50, ERROR=40, WARNING=30, DEBUG=10, DATADUMP=5, NOTSET=0
                 'http_ip': '127.0.0.1',
                 'http_port': 0,
