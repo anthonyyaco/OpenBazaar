@@ -11,6 +11,8 @@ import tornado.httpserver
 import tornado.netutil
 import tornado.web
 from zmq.eventloop import ioloop
+from threading import Thread
+from twisted.internet import reactor
 
 from db_store import Obdb
 from market import Market
@@ -147,7 +149,7 @@ class OpenBazaarContext(object):
                 'disable_open_browser': False,
                 'disable_sqlite_crypt': False,
                 'log_level': 30,
-                # CRITICAL=50, ERROR=40, WARNING=30, DEBUG=10, DATADUMP=5, NOTSET=0
+                # CRITICAL=50 ERROR=40 WARNING=30 DEBUG=10 DEBUGV=9 DATADUMP=5 NOTSET=0
                 'http_ip': '127.0.0.1',
                 'http_port': 0,
                 'bm_user': None,
@@ -192,6 +194,8 @@ class MarketApplication(tornado.web.Application):
         self.transport = CryptoTransportLayer(ob_ctx, db)
         self.market = Market(self.transport, db)
         self.upnp_mapper = None
+
+        Thread(target=reactor.run, args=(False,)).start()
 
         peers = ob_ctx.seeds if not ob_ctx.seed_mode else []
         self.transport.join_network(peers)
@@ -256,6 +260,10 @@ class MarketApplication(tornado.web.Application):
             if not result:
                 print "Warning: UPnP was not setup correctly. ",
                 print "Ports could not be automatically mapped."
+                print "If you only see two or three stores, here are some tips:"
+                print "1. If you are using VPN, configure port forwarding or disable your VPN temporarily"
+                print "2. Configure your router to forward traffic from port",
+                print "%s for both TCP and UDP to your local port %s" % (p2p_port, p2p_port)
 
         return result
 
@@ -314,14 +322,6 @@ def create_logger(ob_ctx):
             u'%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         handler.setFormatter(logFormat)
         logger.addHandler(handler)
-
-        logging.addLevelName(5, "DATADUMP")
-
-        def datadump(self, message, *args, **kwargs):
-            if self.isEnabledFor(5):
-                self._log(5, message, args, **kwargs)
-
-        logging.Logger.datadump = datadump
 
     except Exception as e:
         print "Could not setup logger, continuing: ", e.message

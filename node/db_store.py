@@ -1,5 +1,6 @@
 import logging
 from pysqlcipher import dbapi2 as sqlite
+from threading import Lock
 
 
 class Obdb(object):
@@ -11,15 +12,16 @@ class Obdb(object):
         self.con = False
         self.log = logging.getLogger('DB')
         self.disable_sqlite_crypt = disable_sqlite_crypt
+        self.lock = Lock()
 
     def _connectToDb(self):
         """ Opens a db connection
         """
+        self.lock.acquire()
         self.con = sqlite.connect(
             self.db_path,
             detect_types=sqlite.PARSE_DECLTYPES,
-            timeout=10,
-            check_same_thread=False
+            timeout=10
         )
         sqlite.register_adapter(bool, int)
         sqlite.register_converter("bool", lambda v: bool(int(v)))
@@ -40,6 +42,7 @@ class Obdb(object):
             except Exception:
                 pass
         self.con = False
+        self.lock.release()
 
     @staticmethod
     def _dictFactory(cursor, row):
@@ -70,7 +73,7 @@ class Obdb(object):
             data_dict = where_dict
 
         entries = self.selectEntries(table, where_dict)
-        if len(entries) == 0:
+        if not entries:
             self.insertEntry(table, data_dict)
         return self.selectEntries(table, where_dict)[0]
 
@@ -100,7 +103,7 @@ class Obdb(object):
             set_part = ",".join(set_part)
             for key, value in where_dict.iteritems():
                 sign = "="
-                if type(value) is dict:
+                if isinstance(value, dict):
                     sign = value["sign"]
                     value = value["value"]
                 key = self._beforeStoring(key)
@@ -165,7 +168,7 @@ class Obdb(object):
             where_part = []
             for key, value in where_dict.iteritems():
                 sign = "="
-                if type(value) is dict:
+                if isinstance(value, dict):
                     sign = value["sign"]
                     value = value["value"]
                 key = self._beforeStoring(key)
@@ -207,7 +210,7 @@ class Obdb(object):
             where_part = []
             for key, value in where_dict.iteritems():
                 sign = "="
-                if type(value) is dict:
+                if isinstance(value, dict):
                     sign = value["sign"]
                     value = value["value"]
                 key = self._beforeStoring(key)

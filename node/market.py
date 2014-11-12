@@ -265,8 +265,9 @@ class Market(object):
         self.log.debug("%s %s", guid, nickname)
         notaries = self.settings.get('notaries')
 
-        self.log.debug("notaries: %s", notaries)
-        if notaries == "" or notaries == []:
+        self.log.debug("Notaries: %s", notaries)
+
+        if not notaries:
             notaries = []
         else:
             notaries = json.loads(notaries)
@@ -625,7 +626,7 @@ class Market(object):
             hash_value.update('notary-index')
             key = hash_value.hexdigest()
 
-            if msg['notary'] is True:
+            if msg['notary']:
                 self.log.info('Letting the network know you are now a notary')
                 data = json.dumps({'notary_index_add': self.transport.guid})
                 self.transport.store(key, data, self.transport.guid)
