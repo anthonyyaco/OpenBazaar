@@ -101,11 +101,11 @@ function installMac {
   then
     if [ `getconf LONG_BIT` = "64" ]
     then
-      wget http://dl.node-webkit.org/v0.10.5/node-webkit-v0.10.5-osx-x64.zip -O - | unzip
-      mv node-webkit-v0.10.5-osx-x64 node-webkit
+      wget http://dl.node-webkit.org/v0.11.0/node-webkit-v0.11.0-osx-x64.zip -O - | unzip
+      mv node-webkit-v0.11.0-osx-x64 node-webkit
     else
-      wget http://dl.node-webkit.org/v0.10.5/node-webkit-v0.10.5-osx-ia32.zip -O - | unzip
-      mv node-webkit-v0.10.5-osx-ia32 node-webkit
+      wget http://dl.node-webkit.org/v0.11.0/node-webkit-v0.11.0-osx-ia32.zip -O - | unzip
+      mv node-webkit-v0.11.0-osx-ia32 node-webkit
     fi
   fi
   
@@ -142,13 +142,12 @@ function installUbuntu {
   then
     if [ `getconf LONG_BIT` = "64" ]
     then
-      wget http://dl.node-webkit.org/v0.10.5/node-webkit-v0.10.5-linux-x64.tar.gz -O - | tar -xz
-      mv node-webkit-v0.10.5-linux-x64 node-webkit
+      wget http://dl.node-webkit.org/v0.11.0/node-webkit-v0.11.0-linux-x64.tar.gz -O - | tar -xz
+      mv node-webkit-v0.11.0-linux-x64 node-webkit
     else
-      wget http://dl.node-webkit.org/v0.10.5/node-webkit-v0.10.5-linux-ia32.tar.gz -O - | tar -xz
-      mv node-webkit-v0.10.5-linux-ia32 node-webkit
+      wget http://dl.node-webkit.org/v0.11.0/node-webkit-v0.11.0-linux-ia32.tar.gz -O - | tar -xz
+      mv node-webkit-v0.11.0-linux-ia32 node-webkit
     fi
-    sed -i 's/udev\.so\.0/udev.so.1/g' node-webkit/nw
   fi
 
   doneMessage
