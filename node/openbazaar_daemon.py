@@ -339,10 +339,10 @@ def attempt_browser_open(ob_ctx):
         with open('html/dynamic_port.js', 'w') as fout:
             fout.write('{"ip":"%s","port":"%s"}' % (ob_ctx.http_ip, ob_ctx.http_port))
 
-        nodeurl = os.path.join("node-webkit","nw")
+        nodeurl = os.path.join("node-webkit", "nw")
 
         if is_mac():
-            nodeurl = os.path.join("node-webkit","node-webkit.app","Contents","MacOS","node-webkit")
+            nodeurl = os.path.join("node-webkit", "node-webkit.app", "Contents", "MacOS", "node-webkit")
         subprocess.Popen(nodeurl+ " html", shell=True)
 
 
