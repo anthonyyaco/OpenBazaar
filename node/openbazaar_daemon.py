@@ -5,7 +5,6 @@ import os
 import signal
 from threading import Lock
 import time
-import subprocess
 
 import tornado.httpserver
 import tornado.netutil
@@ -213,6 +212,7 @@ class MarketApplication(tornado.web.Application):
         super(MarketApplication, self).__init__(handlers, **settings)
 
     def start_app(self):
+
         # If self.ob_ctx.http_port is 0, the kernel is queried for a port.
         sockets = tornado.netutil.bind_sockets(
             self.ob_ctx.http_port,
@@ -335,15 +335,8 @@ def log_openbazaar_start(log, ob_ctx):
 
 
 def attempt_browser_open(ob_ctx):
-    if not ob_ctx.disable_open_browser:
-        with open('html/dynamic_port.js', 'w') as fout:
-            fout.write('{"ip":"%s","port":"%s"}' % (ob_ctx.http_ip, ob_ctx.http_port))
-
-        nodeurl = os.path.join("node-webkit", "nw")
-
-        if is_mac():
-            nodeurl = os.path.join("node-webkit", "node-webkit.app", "Contents", "MacOS", "node-webkit")
-        subprocess.Popen(nodeurl+ " html", shell=True)
+    with open('html/dynamic_port.js', 'w') as fout:
+        fout.write('{"ip":"%s","port":"%s"}' % (ob_ctx.http_ip, ob_ctx.http_port))
 
 
 def setup_signal_handlers(application):
@@ -353,7 +346,8 @@ def setup_signal_handlers(application):
         pass
 
 
-def node_starter(ob_ctxs):
+def node_starter(ob_ctxs):	
+
     # This is the target for the the Process which
     # will spawn the children processes that spawn
     # the actual OpenBazaar instances.

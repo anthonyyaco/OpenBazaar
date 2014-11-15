@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>OpenBazaar</title>
+    <link rel="shortcut icon" href="favicon.ico?v=6" />
+    <script src="assets/javascript/jquery-2.1.1.min.js"></script>  
+  </head>
+  <body>
+
+    <h1>Server starting...</h1>
+<script>
+function connectWS() {
+  $.ajax({
+	type: 'GET',
+	url: 'dynamic_port.js',
+	data: {}
+	})
+	.done(function( json ) {
+	  window.location.href="index.html";
+	})
+	.fail(function(){
+	  setTimeout(function(){connectWS()},1000);
+	});
+}
+connectWS();
+</script>
+  </body>
+</html>

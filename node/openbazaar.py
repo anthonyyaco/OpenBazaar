@@ -9,10 +9,12 @@ import multiprocessing
 import os
 import sys
 import threading
+import subprocess
 
 import psutil
 
 import node.network_util as network_util
+from util import is_mac
 from node.openbazaar_daemon import node_starter, OpenBazaarContext, start_node
 import node.setup_db as setup_db
 
@@ -339,6 +341,14 @@ def ensure_database_setup(ob_ctx, defaults):
 
 
 def start(arguments):
+    os.remove('html/dynamic_port.js');
+
+    nodeurl = os.path.join("node-webkit", "nw")
+
+    if is_mac():
+        nodeurl = os.path.join("node-webkit", "node-webkit.app", "Contents", "MacOS", "node-webkit")
+    subprocess.Popen(nodeurl+ " html", shell=True)
+
     defaults = OpenBazaarContext.get_defaults()
     network_util.set_stun_servers()
 
