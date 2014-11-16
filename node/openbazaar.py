@@ -341,7 +341,8 @@ def ensure_database_setup(ob_ctx, defaults):
 
 
 def start(arguments):
-    os.remove('html/dynamic_port.js');
+    if os.path.isfile(os.path.join('html','dynamic_port.js')):
+        os.remove(os.path.join('html','dynamic_port.js'));
 
     nodeurl = os.path.join("node-webkit", "nw")
 
