@@ -346,7 +346,7 @@ def setup_signal_handlers(application):
         pass
 
 
-def node_starter(ob_ctxs):	
+def node_starter(ob_ctxs):
 
     # This is the target for the the Process which
     # will spawn the children processes that spawn
